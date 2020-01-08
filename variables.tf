@@ -97,7 +97,6 @@ variable "task_role_policy" {
   ]
 }
 END
-
 }
 
 variable "assume_role_policy" {
@@ -177,3 +176,7 @@ variable "platform_secrets" {
   default     = []
 }
 
+variable "is_test" {
+  description = "For testing only. Stops the call to AWS for sts"
+  default     = false
+}
