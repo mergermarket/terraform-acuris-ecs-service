@@ -78,7 +78,6 @@ module "service_container_definition" {
       "env"              = var.env
       "team"             = var.release["team"]
       "version"          = var.release["version"]
-      "logentries.token" = var.logentries_token
     },
     var.container_labels,
   )

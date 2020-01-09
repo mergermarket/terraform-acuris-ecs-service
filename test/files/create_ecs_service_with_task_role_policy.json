@@ -1,0 +1,407 @@
+{
+  "resource_changes": [
+    {
+      "address": "module.service_with_task_role_policy.aws_cloudwatch_log_group.stderr",
+      "module_address": "module.service_with_task_role_policy",
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "stderr",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "kms_key_id": null,
+          "name": "ci-ecs-service-test-stderr",
+          "name_prefix": null,
+          "retention_in_days": 7,
+          "tags": null
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.aws_cloudwatch_log_group.stdout",
+      "module_address": "module.service_with_task_role_policy",
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "stdout",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "kms_key_id": null,
+          "name": "ci-ecs-service-test-stdout",
+          "name_prefix": null,
+          "retention_in_days": 7,
+          "tags": null
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.service.aws_ecs_service.service[0]",
+      "module_address": "module.service_with_task_role_policy.module.service",
+      "mode": "managed",
+      "type": "aws_ecs_service",
+      "name": "service",
+      "index": 0,
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "capacity_provider_strategy": [],
+          "cluster": "default",
+          "deployment_controller": [],
+          "deployment_maximum_percent": 200,
+          "deployment_minimum_healthy_percent": 100,
+          "desired_count": 3,
+          "enable_ecs_managed_tags": false,
+          "health_check_grace_period_seconds": null,
+          "load_balancer": [
+            {
+              "container_name": "ecs-service-test",
+              "container_port": 1234,
+              "elb_name": "",
+              "target_group_arn": "a-target-group-arn"
+            }
+          ],
+          "name": "ci-ecs-service-test",
+          "network_configuration": [],
+          "ordered_placement_strategy": [
+            {
+              "field": "attribute:ecs.availability-zone",
+              "type": "spread"
+            },
+            {
+              "field": "instanceId",
+              "type": "spread"
+            }
+          ],
+          "placement_constraints": [],
+          "propagate_tags": null,
+          "scheduling_strategy": "REPLICA",
+          "service_registries": [],
+          "tags": null
+        },
+        "after_unknown": {
+          "capacity_provider_strategy": [],
+          "deployment_controller": [],
+          "iam_role": true,
+          "id": true,
+          "launch_type": true,
+          "load_balancer": [
+            {}
+          ],
+          "network_configuration": [],
+          "ordered_placement_strategy": [
+            {},
+            {}
+          ],
+          "placement_constraints": [],
+          "placement_strategy": true,
+          "platform_version": true,
+          "service_registries": [],
+          "task_definition": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.service.aws_iam_role.role",
+      "module_address": "module.service_with_task_role_policy.module.service",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "role",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "assume_role_policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": { \"Service\": \"ecs.amazonaws.com\" },\n      \"Effect\": \"Allow\"\n    }\n  ]\n}\n",
+          "description": null,
+          "force_detach_policies": false,
+          "max_session_duration": 3600,
+          "name_prefix": "ci-ecs-service-test",
+          "path": "/",
+          "permissions_boundary": null,
+          "tags": null
+        },
+        "after_unknown": {
+          "arn": true,
+          "create_date": true,
+          "id": true,
+          "name": true,
+          "unique_id": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.service.aws_iam_role_policy.policy",
+      "module_address": "module.service_with_task_role_policy.module.service",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "policy",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "name_prefix": "ci-ecs-service-test",
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ec2:AuthorizeSecurityGroupIngress\",\n        \"ec2:Describe*\",\n        \"elasticloadbalancing:DeregisterInstancesFromLoadBalancer\",\n        \"elasticloadbalancing:DeregisterTargets\",\n        \"elasticloadbalancing:Describe*\",\n        \"elasticloadbalancing:RegisterInstancesWithLoadBalancer\",\n        \"elasticloadbalancing:RegisterTargets\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+        },
+        "after_unknown": {
+          "id": true,
+          "name": true,
+          "role": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.service_container_definition.data.external.encode_secrets",
+      "module_address": "module.service_with_task_role_policy.module.service_container_definition",
+      "mode": "data",
+      "type": "external",
+      "name": "encode_secrets",
+      "provider_name": "external",
+      "change": {
+        "actions": [
+          "read"
+        ],
+        "before": null,
+        "after": {
+          "program": [
+            "python",
+            ".terraform/modules/service_with_task_role_policy.service_container_definition/mergermarket-terraform-acuris-ecs-container-definition-2a99a34/encode_secrets.py"
+          ],
+          "query": {
+            "common_secrets": "{}",
+            "secrets": "{}"
+          },
+          "working_dir": null
+        },
+        "after_unknown": {
+          "id": true,
+          "program": [
+            false,
+            false
+          ],
+          "query": {},
+          "result": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.service_container_definition.data.template_file.container_definitions",
+      "module_address": "module.service_with_task_role_policy.module.service_container_definition",
+      "mode": "data",
+      "type": "template_file",
+      "name": "container_definitions",
+      "provider_name": "template",
+      "change": {
+        "actions": [
+          "read"
+        ],
+        "before": null,
+        "after": {
+          "filename": null,
+          "template": "  {\n    \"name\": \"${container_name}\",\n    \"essential\": true,\n    \"image\": \"${image}\",\n    \"portMappings\": ${port_mappings},\n    \"cpu\": ${cpu},\n    \"memory\": ${mem},\n    \"command\": ${command},\n    \"environment\": ${container_env},\n    \"secrets\": ${secrets},\n    \"dockerLabels\": ${labels},\n    \"mountPoints\": [\n      ${mountpoint_sourceVolume == \"none\" ? \"\" :\n          format(\n            \"{ \\\"sourceVolume\\\": \\\"%s\\\", \\\"containerPath\\\": \\\"%s\\\", \\\"readOnly\\\": %s }\",\n            mountpoint_sourceVolume,\n            mountpoint_containerPath,\n            mountpoint_readOnly\n          )\n      }\n    ],\n    \"ulimits\": [\n      {\n        \"name\": \"nofile\",\n        \"softLimit\": ${nofile_soft_ulimit},\n        \"hardLimit\": 65535\n      }\n    ],\n    \"linuxParameters\": {\n      \"initProcessEnabled\": true\n    }\n  }\n",
+          "vars": {
+            "command": "null",
+            "container_env": "[{\"name\": \"COMPONENT_NAME\", \"value\": \"ecs-service-test\"}, {\"name\": \"ENV_NAME\", \"value\": \"ci\"}, {\"name\": \"LOGSPOUT_CLOUDWATCHLOGS_LOG_GROUP_STDERR\", \"value\": \"ci-ecs-service-test-stderr\"}, {\"name\": \"LOGSPOUT_CLOUDWATCHLOGS_LOG_GROUP_STDOUT\", \"value\": \"ci-ecs-service-test-stdout\"}, {\"name\": \"STATSD_ENABLED\", \"value\": \"true\"}, {\"name\": \"STATSD_HOST\", \"value\": \"172.17.42.1\"}, {\"name\": \"STATSD_PORT\", \"value\": \"8125\"}, {\"name\": \"VERSION\", \"value\": \"1\"}]",
+            "container_name": "ecs-service-test",
+            "cpu": "256",
+            "image": "imageId",
+            "labels": "{\"component\":\"ecs-service-test\",\"env\":\"ci\",\"team\":\"super-team\",\"version\":\"1\"}",
+            "mem": "512",
+            "mountpoint_containerPath": "none",
+            "mountpoint_readOnly": "false",
+            "mountpoint_sourceVolume": "none",
+            "nofile_soft_ulimit": "4096",
+            "port_mappings": "[ { \"containerPort\": 1234 } ]"
+          }
+        },
+        "after_unknown": {
+          "id": true,
+          "rendered": true,
+          "vars": {
+            "secrets": true
+          }
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.taskdef.aws_iam_role.ecs_tasks_execution_role",
+      "module_address": "module.service_with_task_role_policy.module.taskdef",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "ecs_tasks_execution_role",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "assume_role_policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ecs-tasks.amazonaws.com\"\n      }\n    }\n  ]\n}",
+          "description": "Task execution role for ci-ecs-service-test",
+          "force_detach_policies": false,
+          "max_session_duration": 3600,
+          "name_prefix": "ci-ecs-service-test",
+          "path": "/",
+          "permissions_boundary": null,
+          "tags": null
+        },
+        "after_unknown": {
+          "arn": true,
+          "create_date": true,
+          "id": true,
+          "name": true,
+          "unique_id": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.taskdef.aws_iam_role.task_role",
+      "module_address": "module.service_with_task_role_policy.module.taskdef",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "task_role",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "assume_role_policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ecs-tasks.amazonaws.com\"\n      }\n    }\n  ]\n}",
+          "description": "Task role for ci-ecs-service-test",
+          "force_detach_policies": false,
+          "max_session_duration": 3600,
+          "name_prefix": "ci-ecs-service-test",
+          "path": "/",
+          "permissions_boundary": null,
+          "tags": null
+        },
+        "after_unknown": {
+          "arn": true,
+          "create_date": true,
+          "id": true,
+          "name": true,
+          "unique_id": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.taskdef.aws_iam_role_policy.execution_role_policy",
+      "module_address": "module.service_with_task_role_policy.module.taskdef",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "execution_role_policy",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "name": "role_policy",
+          "name_prefix": null,
+          "policy": "{\n    \"Version\": \"2012-10-17\",\n    \"Statement\": [\n      {\n          \"Effect\": \"Allow\",\n          \"Action\": [\n              \"ecr:GetAuthorizationToken\",\n              \"ecr:BatchCheckLayerAvailability\",\n              \"ecr:GetDownloadUrlForLayer\",\n              \"ecr:BatchGetImage\",\n              \"logs:CreateLogStream\",\n              \"logs:PutLogEvents\"\n          ],\n          \"Resource\": \"*\"\n      },\n      {\n          \"Sid\": \"\",\n          \"Effect\": \"Allow\",\n          \"Action\": [\n              \"secretsmanager:List*\",\n              \"secretsmanager:DescribeSecret\"\n          ],\n          \"Resource\": \"*\"\n      },\n      {\n          \"Sid\": \"\",\n          \"Effect\": \"Allow\",\n          \"Action\": \"secretsmanager:GetSecretValue\",\n          \"Resource\": \"arn:aws:secretsmanager:eu-west-1::secret:platform_secrets/*\"\n      },\n      {\n          \"Sid\": \"\",\n          \"Effect\": \"Allow\",\n          \"Action\": \"secretsmanager:GetSecretValue\",\n          \"Resource\": \"arn:aws:secretsmanager:eu-west-1::secret:super-team/ci/ecs-service-test/*\"\n      }\n    ]\n}\n"
+        },
+        "after_unknown": {
+          "id": true,
+          "role": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.taskdef.aws_iam_role_policy.role_policy",
+      "module_address": "module.service_with_task_role_policy.module.taskdef",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "role_policy",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "name_prefix": "ci-ecs-service-test",
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Action\": \"s3:*\",\n      \"Effect\": \"Allow\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+        },
+        "after_unknown": {
+          "id": true,
+          "name": true,
+          "role": true
+        }
+      }
+    },
+    {
+      "address": "module.service_with_task_role_policy.module.taskdef.module.task_definition.aws_ecs_task_definition.taskdef",
+      "module_address": "module.service_with_task_role_policy.module.taskdef.module.task_definition",
+      "mode": "managed",
+      "type": "aws_ecs_task_definition",
+      "name": "taskdef",
+      "provider_name": "aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "cpu": null,
+          "family": "ci-ecs-service-test",
+          "ipc_mode": null,
+          "memory": null,
+          "pid_mode": null,
+          "placement_constraints": [],
+          "proxy_configuration": [],
+          "requires_compatibilities": null,
+          "tags": null,
+          "volume": [
+            {
+              "docker_volume_configuration": [],
+              "host_path": "/tmp/dummy_volume",
+              "name": "dummy"
+            }
+          ]
+        },
+        "after_unknown": {
+          "arn": true,
+          "container_definitions": true,
+          "execution_role_arn": true,
+          "id": true,
+          "network_mode": true,
+          "placement_constraints": [],
+          "proxy_configuration": [],
+          "revision": true,
+          "task_role_arn": true,
+          "volume": [
+            {
+              "docker_volume_configuration": []
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

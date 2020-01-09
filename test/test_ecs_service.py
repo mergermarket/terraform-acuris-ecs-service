@@ -51,3 +51,39 @@ class TestCreateService(unittest.TestCase):
         assert len(resource_changes) == 12
         self.assert_resource_changes_action(resource_changes, 'create', 10)
         self.assert_resource_changes('create_ecs_service', resource_changes)
+
+    def test_create_ecs_service_with_name_suffix(self):
+        # Given When
+        check_call([
+            'terraform',
+            'plan',
+            '-out=plan.out',
+            '-no-color',
+            '-target=module.service_with_name_suffix',
+            'test/infra'
+        ])
+
+        resource_changes = self.get_resource_changes()
+
+        # Then
+        assert len(resource_changes) == 12
+        self.assert_resource_changes_action(resource_changes, 'create', 10)
+        self.assert_resource_changes('create_ecs_service_with_name_suffix', resource_changes)
+
+    def test_create_ecs_service_with_task_role_policy(self):
+        # Given When
+        check_call([
+            'terraform',
+            'plan',
+            '-out=plan.out',
+            '-no-color',
+            '-target=module.service_with_task_role_policy',
+            'test/infra'
+        ])
+
+        resource_changes = self.get_resource_changes()
+
+        # Then
+        assert len(resource_changes) == 12
+        self.assert_resource_changes_action(resource_changes, 'create', 10)
+        self.assert_resource_changes('create_ecs_service_with_task_role_policy', resource_changes)

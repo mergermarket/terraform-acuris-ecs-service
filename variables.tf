@@ -75,12 +75,6 @@ variable "target_group_arn" {
   type        = string
 }
 
-variable "logentries_token" {
-  description = "The Logentries token used to be able to get logs sent to a specific log set."
-  type        = string
-  default     = ""
-}
-
 variable "task_role_policy" {
   description = "IAM policy document to apply to the tasks via a task role"
   type        = string

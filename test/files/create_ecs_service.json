@@ -229,7 +229,7 @@
                         "container_name": "ecs-service-test",
                         "cpu": "256",
                         "image": "imageId",
-                        "labels": "{\"component\":\"ecs-service-test\",\"env\":\"ci\",\"logentries.token\":\"\",\"team\":\"super-team\",\"version\":\"1\"}",
+                        "labels": "{\"component\":\"ecs-service-test\",\"env\":\"ci\",\"team\":\"super-team\",\"version\":\"1\"}",
                         "mem": "512",
                         "mountpoint_containerPath": "none",
                         "mountpoint_readOnly": "false",
