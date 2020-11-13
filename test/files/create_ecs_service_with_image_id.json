@@ -80,7 +80,8 @@
           "scheduling_strategy": "REPLICA",
           "service_registries": [],
           "tags": null,
-          "timeouts": null
+          "timeouts": null,
+          "wait_for_steady_state": false
         },
         "after_unknown": {
           "capacity_provider_strategy": [],
@@ -157,7 +158,7 @@
         "after": {
           "program": [
             "python",
-            ".terraform/modules/service_with_image_id.service_container_definition/terraform-acuris-ecs-container-definition-2.0.0/encode_secrets.py"
+            ".terraform/modules/service_with_image_id.service_container_definition/encode_secrets.py"
           ],
           "query": { "common_secrets": "{}", "secrets": "{}" },
           "working_dir": null
