@@ -93,7 +93,12 @@
               "type": "spread"
             }
           ],
-          "placement_constraints": [],
+          "placement_constraints": [
+            {
+              "expression": "agentConnected == true",
+              "type": "memberOf"
+            }
+          ],
           "propagate_tags": null,
           "scheduling_strategy": "REPLICA",
           "service_registries": [],
@@ -115,7 +120,7 @@
             {},
             {}
           ],
-          "placement_constraints": [],
+          "placement_constraints": [{}],
           "platform_version": true,
           "service_registries": [],
           "task_definition": true

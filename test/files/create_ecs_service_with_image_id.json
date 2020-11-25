@@ -75,7 +75,12 @@
             { "field": "attribute:ecs.availability-zone", "type": "spread" },
             { "field": "instanceId", "type": "spread" }
           ],
-          "placement_constraints": [],
+          "placement_constraints": [
+            {
+              "expression": "agentConnected == true",
+              "type": "memberOf"
+            }
+          ],
           "propagate_tags": null,
           "scheduling_strategy": "REPLICA",
           "service_registries": [],
@@ -92,7 +97,7 @@
           "load_balancer": [{}],
           "network_configuration": [],
           "ordered_placement_strategy": [{}, {}],
-          "placement_constraints": [],
+          "placement_constraints": [{}],
           "platform_version": true,
           "service_registries": [],
           "task_definition": true
