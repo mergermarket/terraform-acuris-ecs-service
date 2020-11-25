@@ -180,3 +180,9 @@ variable "image_id" {
   type        = string
   default     = ""
 }
+
+variable "pack_and_distinct" {
+  description = "Enable distinct instance and task binpacking for better cluster utilisation. Enter 'true' for clusters with auto scaling groups. Enter 'false' for clusters with no ASG and instant counts less than or equal to desired tasks"
+  type = string
+  default = "false"
+}
