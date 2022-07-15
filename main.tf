@@ -29,6 +29,7 @@ module "service" {
   network_configuration_subnets         = var.network_configuration_subnets
   network_configuration_security_groups = var.network_configuration_security_groups
   pack_and_distinct                     = var.pack_and_distinct
+  health_check_grace_period_seconds     = var.health_check_grace_period_seconds
 }
 
 module "taskdef" {
@@ -127,7 +128,7 @@ resource "aws_appautoscaling_target" "ecs" {
 }
 
 resource "aws_appautoscaling_scheduled_action" "scale_down" {
-  count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0 
+  count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0
   name               = "scale_down-${local.service_name}${var.name_suffix}"
   service_namespace  = aws_appautoscaling_target.ecs[0].service_namespace
   resource_id        = aws_appautoscaling_target.ecs[0].resource_id
@@ -141,7 +142,7 @@ resource "aws_appautoscaling_scheduled_action" "scale_down" {
 }
 
 resource "aws_appautoscaling_scheduled_action" "scale_back_up" {
-  count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0 
+  count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0
   name               = "scale_up-${local.service_name}${var.name_suffix}"
   service_namespace  = aws_appautoscaling_target.ecs[0].service_namespace
   resource_id        = aws_appautoscaling_target.ecs[0].resource_id
