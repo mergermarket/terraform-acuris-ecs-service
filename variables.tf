@@ -47,6 +47,12 @@ variable "cpu" {
   description = "CPU unit reservation for the container"
 }
 
+variable "privileged" {
+  description = "Gives the container privileged access to the host"
+  type = bool
+  default = false
+}
+
 variable "memory" {
   type        = string
   description = "The memory reservation for the container in megabytes"
