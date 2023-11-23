@@ -11,6 +11,7 @@ module "ecs_update_monitor" {
   service = module.service.name
   taskdef = module.taskdef.arn
   is_test = var.is_test
+  timeout = var.deployment_timeout
 }
 
 module "service" {

@@ -234,3 +234,9 @@ variable "health_check_grace_period_seconds" {
   type        = string
   default     = "0"
 }
+
+variable "deployment_timeout" {
+  description = "Timeout to wait for the deployment to be finished [seconds]."
+  type        = number
+  default     = 600
+}
