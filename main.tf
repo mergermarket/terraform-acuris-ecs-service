@@ -4,7 +4,7 @@ locals {
 }
 
 module "ecs_update_monitor" {
-  source  = "github.com/mergermarket/terraform-acuris-ecs-update-monitor"
+  source  = "mergermarket/ecs-update-monitor/acuris"
   version = "2.3.0"
 
   cluster = var.ecs_cluster
