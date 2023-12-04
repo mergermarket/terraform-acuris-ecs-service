@@ -4,13 +4,14 @@ locals {
 }
 
 module "ecs_update_monitor" {
-  source  = "mergermarket/ecs-update-monitor/acuris"
-  version = "2.2.1"
+  source  = "github.com/mergermarket/terraform-acuris-ecs-update-monitor"
+  version = "2.3.0"
 
   cluster = var.ecs_cluster
   service = module.service.name
   taskdef = module.taskdef.arn
   is_test = var.is_test
+  timeout = var.deployment_timeout
 }
 
 module "service" {
