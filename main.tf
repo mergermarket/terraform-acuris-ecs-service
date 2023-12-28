@@ -122,7 +122,7 @@ resource "aws_cloudwatch_log_subscription_filter" "kinesis_log_stderr_stream" {
 }
 
 resource "aws_appautoscaling_target" "ecs" {
-  count              = var.allow_overnight_scaledown ? 1 : 0
+  count              = var.allow_overnight_scaledown || var.enable_task_scaling ? 1 : 0
   min_capacity       = var.desired_count
   max_capacity       = var.desired_count
   resource_id        = "service/${var.ecs_cluster}/${local.full_service_name}"
@@ -155,5 +155,28 @@ resource "aws_appautoscaling_scheduled_action" "scale_back_up" {
   scalable_target_action {
     min_capacity = var.desired_count
     max_capacity = var.desired_count
+  }
+}
+
+resource "aws_appautoscaling_policy" "task_scaling_policy" {
+  for_each   = {
+    for index, scale in local.scaling_metrics:
+    scale.metric => scale 
+  }  
+  name               = each.value.name
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = "service/${var.ecs_cluster}/${local.full_service_name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+
+  target_tracking_scaling_policy_configuration {
+    disable_scale_in   = each.value.disable_scale_in
+    scale_in_cooldown  = each.value.scale_in_cooldown
+    scale_out_cooldown = each.value.scale_out_cooldown
+    target_value       = each.value.target_value
+
+    predefined_metric_specification {
+      predefined_metric_type = each.value.metric
+    }
   }
 }

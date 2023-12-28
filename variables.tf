@@ -49,8 +49,8 @@ variable "cpu" {
 
 variable "privileged" {
   description = "Gives the container privileged access to the host"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "memory" {
@@ -84,7 +84,7 @@ variable "target_group_arn" {
 
 variable "multiple_target_group_arns" {
   description = "Mutiple target group ARNs to allow connection to multiple loadbalancers"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
@@ -202,26 +202,26 @@ variable "network_mode" {
 
 variable "network_configuration_subnets" {
   description = "needed for network_mode awsvpc "
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "network_configuration_security_groups" {
   description = "needed for network_mode awsvpc "
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "add_datadog_feed" {
   description = "Flag to control adding subscription filter to CW loggroup"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "pack_and_distinct" {
   description = "Enable distinct instance and task binpacking for better cluster utilisation. Enter 'true' for clusters with auto scaling groups. Enter 'false' for clusters with no ASG and instant counts less than or equal to desired tasks"
-  type = string
-  default = "false"
+  type        = string
+  default     = "false"
 }
 
 variable "stop_timeout" {
@@ -239,4 +239,10 @@ variable "deployment_timeout" {
   description = "Timeout to wait for the deployment to be finished [seconds]."
   type        = number
   default     = 600
+}
+
+variable "scaling_metrics" {
+  description = "Allow service to be scaled down"
+  default     = []
+  type        = list(map(string)
 }
