@@ -122,7 +122,6 @@ resource "aws_cloudwatch_log_subscription_filter" "kinesis_log_stderr_stream" {
 }
 
 resource "aws_appautoscaling_target" "ecs" {
-  count              = var.allow_overnight_scaledown || var.enable_task_scaling ? 1 : 0
   min_capacity       = var.desired_count
   max_capacity       = var.desired_count
   resource_id        = "service/${var.ecs_cluster}/${local.full_service_name}"
