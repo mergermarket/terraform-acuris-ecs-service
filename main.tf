@@ -132,9 +132,9 @@ resource "aws_appautoscaling_target" "ecs" {
 resource "aws_appautoscaling_scheduled_action" "scale_down" {
   count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0
   name               = "scale_down-${local.full_service_name}"
-  service_namespace  = aws_appautoscaling_target.ecs[0].service_namespace
-  resource_id        = aws_appautoscaling_target.ecs[0].resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs[0].scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs.scalable_dimension
   schedule           = "cron(*/30 ${var.overnight_scaledown_start_hour}-${var.overnight_scaledown_end_hour - 1} ? * * *)"
 
   scalable_target_action {
@@ -146,9 +146,9 @@ resource "aws_appautoscaling_scheduled_action" "scale_down" {
 resource "aws_appautoscaling_scheduled_action" "scale_back_up" {
   count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0
   name               = "scale_up-${local.full_service_name}"
-  service_namespace  = aws_appautoscaling_target.ecs[0].service_namespace
-  resource_id        = aws_appautoscaling_target.ecs[0].resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs[0].scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs.scalable_dimension
   schedule           = "cron(10 ${var.overnight_scaledown_end_hour} ? * MON-FRI *)"
 
   scalable_target_action {
@@ -159,14 +159,14 @@ resource "aws_appautoscaling_scheduled_action" "scale_back_up" {
 
 resource "aws_appautoscaling_policy" "task_scaling_policy" {
   for_each   = {
-    for index, scale in local.scaling_metrics:
+    for index, scale in var.scaling_metrics:
     scale.metric => scale 
   }  
   name               = each.value.name
   policy_type        = "TargetTrackingScaling"
-  resource_id        = "service/${var.ecs_cluster}/${local.full_service_name}"
-  scalable_dimension = "ecs:service:DesiredCount"
-  service_namespace  = "ecs"
+  resource_id        = aws_appautoscaling_target.ecs.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs.service_namespace
 
   target_tracking_scaling_policy_configuration {
     disable_scale_in   = each.value.disable_scale_in
