@@ -30,6 +30,7 @@ An ECS service with an ALB target group, suitable for routing to from an ALB.
 
 | Name | Type |
 |------|------|
+| [aws_appautoscaling_policy.task_scaling_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) | resource |
 | [aws_appautoscaling_scheduled_action.scale_back_up](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_scheduled_action) | resource |
 | [aws_appautoscaling_scheduled_action.scale_down](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_scheduled_action) | resource |
 | [aws_appautoscaling_target.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
@@ -63,10 +64,10 @@ An ECS service with an ALB target group, suitable for routing to from an ALB.
 | <a name="input_is_test"></a> [is\_test](#input\_is\_test) | For testing only. Stops the call to AWS for sts | `bool` | `false` | no |
 | <a name="input_log_subscription_arn"></a> [log\_subscription\_arn](#input\_log\_subscription\_arn) | To enable logging to a kinesis stream | `string` | `""` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | The memory reservation for the container in megabytes | `string` | n/a | yes |
-| <a name="input_multiple_target_group_arns"></a> [multiple\_target\_group\_arns](#input\_multiple\_target\_group\_arns) | Mutiple target group ARNs to allow connection to multiple loadbalancers | `list` | `[]` | no |
+| <a name="input_multiple_target_group_arns"></a> [multiple\_target\_group\_arns](#input\_multiple\_target\_group\_arns) | Mutiple target group ARNs to allow connection to multiple loadbalancers | `list(any)` | `[]` | no |
 | <a name="input_name_suffix"></a> [name\_suffix](#input\_name\_suffix) | Set a suffix that will be applied to the name in order that a component can have multiple services per environment | `string` | `""` | no |
-| <a name="input_network_configuration_security_groups"></a> [network\_configuration\_security\_groups](#input\_network\_configuration\_security\_groups) | needed for network\_mode awsvpc | `list` | `[]` | no |
-| <a name="input_network_configuration_subnets"></a> [network\_configuration\_subnets](#input\_network\_configuration\_subnets) | needed for network\_mode awsvpc | `list` | `[]` | no |
+| <a name="input_network_configuration_security_groups"></a> [network\_configuration\_security\_groups](#input\_network\_configuration\_security\_groups) | needed for network\_mode awsvpc | `list(any)` | `[]` | no |
+| <a name="input_network_configuration_subnets"></a> [network\_configuration\_subnets](#input\_network\_configuration\_subnets) | needed for network\_mode awsvpc | `list(any)` | `[]` | no |
 | <a name="input_network_mode"></a> [network\_mode](#input\_network\_mode) | The Docker networking mode to use for the containers in the task | `string` | `"bridge"` | no |
 | <a name="input_nofile_soft_ulimit"></a> [nofile\_soft\_ulimit](#input\_nofile\_soft\_ulimit) | The soft ulimit for the number of files in container | `string` | `"4096"` | no |
 | <a name="input_overnight_scaledown_end_hour"></a> [overnight\_scaledown\_end\_hour](#input\_overnight\_scaledown\_end\_hour) | When to bring service back to full strength (Hour in UTC) | `string` | `"06"` | no |
@@ -78,6 +79,7 @@ An ECS service with an ALB target group, suitable for routing to from an ALB.
 | <a name="input_port"></a> [port](#input\_port) | The port that container will be running on | `string` | n/a | yes |
 | <a name="input_privileged"></a> [privileged](#input\_privileged) | Gives the container privileged access to the host | `bool` | `false` | no |
 | <a name="input_release"></a> [release](#input\_release) | Metadata about the release | `map(string)` | n/a | yes |
+| <a name="input_scaling_metrics"></a> [scaling\_metrics](#input\_scaling\_metrics) | A list of maps defining the scaling of the services tasks - for more info see below | `list(any)` | `[]` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | Secret credentials fetched using credstash | `map(string)` | `{}` | no |
 | <a name="input_stop_timeout"></a> [stop\_timeout](#input\_stop\_timeout) | The duration is seconds to wait before the container is forcefully killed. Default 30s, max 120s. | `string` | `"none"` | no |
 | <a name="input_target_group_arn"></a> [target\_group\_arn](#input\_target\_group\_arn) | The ALB target group for the service. | `string` | `""` | no |
@@ -94,4 +96,44 @@ An ECS service with an ALB target group, suitable for routing to from an ALB.
 | <a name="output_task_role_arn"></a> [task\_role\_arn](#output\_task\_role\_arn) | n/a |
 | <a name="output_task_role_name"></a> [task\_role\_name](#output\_task\_role\_name) | n/a |
 | <a name="output_taskdef_arn"></a> [taskdef\_arn](#output\_taskdef\_arn) | n/a |
+
+## Scaling Metrics
+
+Setting this variable to a lis tof maps.  Each map defines a seperate scaling policy
+
+| Param | Description |
+|-------|-------------|
+| name | (Required) Must be unique |
+| metric | (Required) Name of the metric to use for scaling - see below for allowed values|
+| target_value | (Required) Value of the above metric that scaling will maintain |
+| disable_scale_in | (Optional) Whether scale in by the target tracking policy is disabled. If the value is true, scale in is disabled and the target tracking policy won't remove capacity from the scalable resource.|
+| scale_in_cooldown | (Optional) Amount of time, in seconds, after a scale in activity completes before another scale in activity can start |
+| scale_out_cooldown |  (Optional) Amount of time, in seconds, after a scale out activity completes before another scale out activity can start. |
+
+### Allowed Metrics
+* ECSServiceAverageCPUUtilization
+* ECSServiceAverageMemoryUtilization
+* ALBRequestCountPerTarget
+
+### Example
+```
+  scaling_metrics = [
+    {
+      name               = "cpu"
+      metric             = "ECSServiceAverageCPUUtilization"
+      target_value       = 10
+      disable_scale_in   = false
+      scale_in_cooldown  = 180
+      scale_out_cooldown = 90
+    },
+    {
+      name               = "memory"
+      metric             = "ECSServiceAverageMemoryUtilization"
+      target_value       = 10
+      disable_scale_in   = false
+      scale_in_cooldown  = 180
+      scale_out_cooldown = 90
+    }
+  ]
+```
 <!-- END_TF_DOCS -->
