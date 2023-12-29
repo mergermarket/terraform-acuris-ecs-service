@@ -243,6 +243,6 @@ variable "deployment_timeout" {
 
 variable "scaling_metrics" {
   description = "Allow service to be scaled down"
+  type        = list(any)
   default     = []
-  type        = list(map(string)
 }
