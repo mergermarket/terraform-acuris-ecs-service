@@ -1,7 +1,7 @@
 import json
 import unittest
-
 from subprocess import check_call, check_output
+
 
 class TestCreateService(unittest.TestCase):
 
@@ -47,8 +47,8 @@ class TestCreateService(unittest.TestCase):
         resource_changes = self.get_resource_changes()
 
         # Then
-        assert len(resource_changes) == 12
-        self.assert_resource_changes_action(resource_changes, 'create', 10)
+        assert len(resource_changes) == 15
+        self.assert_resource_changes_action(resource_changes, 'create', 13)
         self.assert_resource_changes('create_ecs_service', resource_changes)
 
     def test_create_ecs_service_with_name_suffix(self):
@@ -65,8 +65,8 @@ class TestCreateService(unittest.TestCase):
         resource_changes = self.get_resource_changes()
 
         # Then
-        assert len(resource_changes) == 12
-        self.assert_resource_changes_action(resource_changes, 'create', 10)
+        assert len(resource_changes) == 15
+        self.assert_resource_changes_action(resource_changes, 'create', 13)
         self.assert_resource_changes('create_ecs_service_with_name_suffix', resource_changes)
 
     def test_create_ecs_service_with_task_role_policy(self):
@@ -83,8 +83,8 @@ class TestCreateService(unittest.TestCase):
         resource_changes = self.get_resource_changes()
 
         # Then
-        assert len(resource_changes) == 12
-        self.assert_resource_changes_action(resource_changes, 'create', 10)
+        assert len(resource_changes) == 15
+        self.assert_resource_changes_action(resource_changes, 'create', 13)
         self.assert_resource_changes('create_ecs_service_with_task_role_policy', resource_changes)
 
     def test_create_ecs_service_with_image_id(self):
@@ -101,6 +101,6 @@ class TestCreateService(unittest.TestCase):
         resource_changes = self.get_resource_changes()
 
         # Then
-        assert len(resource_changes) == 12
-        self.assert_resource_changes_action(resource_changes, 'create', 10)
+        assert len(resource_changes) == 15
+        self.assert_resource_changes_action(resource_changes, 'create', 13)
         self.assert_resource_changes('create_ecs_service_with_image_id', resource_changes)

@@ -253,3 +253,8 @@ variable "placement_constraint_on_demand_only" {
   default     = false
 }
 
+variable "extra_hosts" {
+  description = "Extra hosts to add to the container /etc/hosts file"
+  type        = map(string)
+  default     = {}
+}
