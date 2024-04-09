@@ -28,6 +28,10 @@ locals {
   ]
 }
 
+output "capacity_providers" {
+  value = local.capacity_providers
+}
+
 module "service" {
   source  = "mergermarket/load-balanced-ecs-service-no-target-group/acuris"
   version = "2.4.1"
