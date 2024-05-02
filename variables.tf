@@ -270,3 +270,9 @@ variable "image_build_details" {
     "platforms" = ""
   }
 }
+
+variable "capacity_provider_spot_tasks_weight" {
+  default = 1
+  type = number
+  description = "Weight "
+}

@@ -18,13 +18,21 @@ locals {
   capacity_providers = var.image_build_details["buildx"] == "true" && can(regexall("^arm64", var.image_build_details["platforms"])) ? [
     {
       capacity_provider = "${var.ecs_cluster}-native-scaling"
-      weight            = 1
+      weight            = 2
     },
+    {
+      capacity_provider = "${var.ecs_cluster}-native-spot-scaling" 
+      weight            = var.capacity_provider_spot_tasks_weight
+    }
   ] : [
     {
       capacity_provider = "${var.ecs_cluster}-native-scaling"
-      weight            = 1
-    },    
+      weight            = 2
+    },
+    {
+      capacity_provider = "${var.ecs_cluster}-native-spot-scaling" 
+      weight            = var.capacity_provider_spot_tasks_weight
+    }
   ]
 }
 
