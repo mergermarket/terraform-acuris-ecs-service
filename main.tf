@@ -16,8 +16,8 @@ module "ecs_update_monitor" {
 
 locals {
   p = var.spot_capacity_percentage <= 50 ? var.spot_capacity_percentage : 100 - var.spot_capacity_percentage
-  lower_weight = ceil((local.p / 100))
-  higher_weight = local.lower_weight == 0 ? 1 : floor(local.lower_weight / (local.p / 100)) - 1
+  lower_weight = ceil(local.p / 100)
+  higher_weight = local.lower_weight == 0 ? 1 : (floor(local.lower_weight / (local.p / 100)) - 1)
   spot_weight = var.spot_capacity_percentage <= 50 ? local.lower_weight : local.higher_weight
   ondemand_weight = var.spot_capacity_percentage <= 50 ? local.higher_weight : local.lower_weight
 
