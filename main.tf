@@ -1,7 +1,7 @@
 locals {
   service_name      = "${var.env}-${var.release["component"]}"
   full_service_name = "${local.service_name}${var.name_suffix}"
-  p = var.spot_capacity_percentage
+  p = var.spot_capacity_percentage <= 50 ? var.spot_capacity_percentage : 100 - var.spot_capacity_percentage
   lower_weight = ceil((local.p / 100))
   higher_weight = local.lower_weight == 0 ? 1 : ceil(local.lower_weight / (local.p / 100)) - 1
   spot_weight = local.p <= 50 || local.p == 100 ? local.lower_weight : local.higher_weight
