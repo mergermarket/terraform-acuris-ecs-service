@@ -1,6 +1,10 @@
 locals {
   service_name      = "${var.env}-${var.release["component"]}"
   full_service_name = "${local.service_name}${var.name_suffix}"
+  lower_weight = ceil((var.spot_capacity_percentage / 100))
+  high_weight = floor(local.lower_weight / (var.spot_capacity_percentage / 100))
+  spot_weight = var.spot_capacity_percentage <= 50 ? local.lower_weight : local.high_weight
+  ondemand_weight = var.spot_capacity_percentage <= 50 ? local.high_weight : local.lower_weight
 }
 
 module "ecs_update_monitor" {
@@ -18,20 +22,20 @@ locals {
   capacity_providers = var.image_build_details["buildx"] == "true" && can(regexall("^arm64", var.image_build_details["platforms"])) ? [
     {
       capacity_provider = "${var.ecs_cluster}-native-scaling"
-      weight            = 2
+      weight            = local.ondemand_weight
     },
     {
-      capacity_provider = "${var.ecs_cluster}-native-spot-scaling" 
-      weight            = var.capacity_provider_spot_tasks_weight
+      capacity_provider = "${var.ecs_cluster}-native-scaling-spot" 
+      weight            = local.spot_weight
     }
   ] : [
     {
       capacity_provider = "${var.ecs_cluster}-native-scaling"
-      weight            = 2
+      weight            = local.ondemand_weight
     },
     {
-      capacity_provider = "${var.ecs_cluster}-native-spot-scaling" 
-      weight            = var.capacity_provider_spot_tasks_weight
+      capacity_provider = "${var.ecs_cluster}-native-scaling-spot" 
+      weight            = local.spot_weight
     }
   ]
 }

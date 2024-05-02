@@ -271,8 +271,8 @@ variable "image_build_details" {
   }
 }
 
-variable "capacity_provider_spot_tasks_weight" {
-  default = 1
+variable "spot_capacity_percentage" {
+  default = 20
   type = number
-  description = "Weight "
+  description = "Percentage of tasks to run on spot instances"
 }
