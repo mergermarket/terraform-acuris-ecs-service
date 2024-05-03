@@ -23,11 +23,11 @@ locals {
 
   capacity_providers = var.image_build_details["buildx"] == "true" && can(regexall("^arm64", var.image_build_details["platforms"])) ? [
     {
-      capacity_provider = "${var.ecs_cluster}-native-scaling"
+      capacity_provider = "${var.ecs_cluster}-native-scaling-graviton"
       weight            = local.ondemand_weight
     },
     {
-      capacity_provider = "${var.ecs_cluster}-native-scaling-spot" 
+      capacity_provider = "${var.ecs_cluster}-native-scaling-graviton-spot" 
       weight            = local.spot_weight
     }
   ] : [
