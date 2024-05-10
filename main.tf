@@ -1,6 +1,13 @@
 locals {
   service_name      = "${var.env}-${var.release["component"]}"
   full_service_name = "${local.service_name}${var.name_suffix}"
+
+  tags = merge({
+     "component"              = var.release["component"]
+      "env"                   = var.release["env"]
+      "team"                  = var.release["team"]
+      "version"               = var.release["version"]
+  })
 }
 
 module "ecs_update_monitor" {
@@ -50,6 +57,7 @@ module "service" {
   pack_and_distinct                     = var.pack_and_distinct
   health_check_grace_period_seconds     = var.health_check_grace_period_seconds
   capacity_providers                    = local.capacity_providers
+  tags                                  = local.tags
 }
 
 module "taskdef" {
