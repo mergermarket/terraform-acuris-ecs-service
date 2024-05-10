@@ -33,8 +33,7 @@ output "capacity_providers" {
 }
 
 module "service" {
-  source  = "mergermarket/load-balanced-ecs-service-no-target-group/acuris"
-  version = "2.5.0"
+  source  = "github.com/mergermarket/terraform-acuris-load-balanced-ecs-service-no-target-group?ref=add-tags"
 
   name                                  = local.full_service_name
   cluster                               = var.ecs_cluster
