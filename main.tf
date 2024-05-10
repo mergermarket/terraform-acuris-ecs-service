@@ -4,7 +4,7 @@ locals {
 
   tags = merge({
      "component"              = var.release["component"]
-      "env"                   = var.release["env"]
+      "env"                   = terraform.workspace
       "team"                  = var.release["team"]
       "version"               = var.release["version"]
   })
