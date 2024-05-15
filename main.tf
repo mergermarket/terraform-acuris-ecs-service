@@ -40,7 +40,8 @@ output "capacity_providers" {
 }
 
 module "service" {
-  source  = "github.com/mergermarket/terraform-acuris-load-balanced-ecs-service-no-target-group?ref=add-tags"
+  source  = "mergermarket/load-balanced-ecs-service-no-target-group/acuris"
+  version = "2.5.0"
 
   name                                  = local.full_service_name
   cluster                               = var.ecs_cluster
@@ -57,12 +58,11 @@ module "service" {
   pack_and_distinct                     = var.pack_and_distinct
   health_check_grace_period_seconds     = var.health_check_grace_period_seconds
   capacity_providers                    = local.capacity_providers
-  tags                                  = local.tags
 }
 
 module "taskdef" {
   source  = "mergermarket/task-definition-with-task-role/acuris"
-  version = "2.2.0"
+  version = "2.3.0"
 
   family                = local.full_service_name
   container_definitions = [module.service_container_definition.rendered]
@@ -74,6 +74,7 @@ module "taskdef" {
   network_mode          = var.network_mode
   is_test               = var.is_test
   placement_constraint_on_demand_only = var.placement_constraint_on_demand_only
+  tags                  = local.tags
 }
 
 module "service_container_definition" {
