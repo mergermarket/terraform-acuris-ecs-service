@@ -22,16 +22,30 @@ module "ecs_update_monitor" {
 }
 
 locals {
+  p = var.spot_capacity_percentage <= 50 ? var.spot_capacity_percentage : 100 - var.spot_capacity_percentage
+  lower_weight = ceil(local.p / 100)
+  higher_weight = local.lower_weight == 0 ? 1 : (floor(local.lower_weight / (local.p / 100)) - local.lower_weight)
+  spot_weight = var.spot_capacity_percentage <= 50 ? local.lower_weight : local.higher_weight
+  ondemand_weight = var.spot_capacity_percentage <= 50 ? local.higher_weight : local.lower_weight
+
   capacity_providers = var.image_build_details["buildx"] == "true" && can(regexall("^arm64", var.image_build_details["platforms"])) ? [
     {
       capacity_provider = "${var.ecs_cluster}-native-scaling-graviton"
-      weight            = 1
+      weight            = local.ondemand_weight
     },
+    {
+      capacity_provider = "${var.ecs_cluster}-native-scaling-graviton-spot" 
+      weight            = local.spot_weight
+    }
   ] : [
     {
       capacity_provider = "${var.ecs_cluster}-native-scaling"
-      weight            = 1
-    },    
+      weight            = local.ondemand_weight
+    },
+    {
+      capacity_provider = "${var.ecs_cluster}-native-scaling-spot" 
+      weight            = local.spot_weight
+    }
   ]
 }
 
