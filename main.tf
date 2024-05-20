@@ -1,6 +1,13 @@
 locals {
   service_name      = "${var.env}-${var.release["component"]}"
   full_service_name = "${local.service_name}${var.name_suffix}"
+
+  tags = merge({
+     "component"              = var.release["component"]
+      "env"                   = terraform.workspace
+      "team"                  = var.release["team"]
+      "version"               = var.release["version"]
+  })
 }
 
 module "ecs_update_monitor" {
@@ -69,7 +76,7 @@ module "service" {
 
 module "taskdef" {
   source  = "mergermarket/task-definition-with-task-role/acuris"
-  version = "2.2.0"
+  version = "2.3.0"
 
   family                = local.full_service_name
   container_definitions = [module.service_container_definition.rendered]
@@ -81,6 +88,7 @@ module "taskdef" {
   network_mode          = var.network_mode
   is_test               = var.is_test
   placement_constraint_on_demand_only = var.placement_constraint_on_demand_only
+  tags                  = local.tags
 }
 
 module "service_container_definition" {
