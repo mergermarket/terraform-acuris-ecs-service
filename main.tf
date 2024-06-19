@@ -27,7 +27,7 @@ locals {
   higher_weight = local.lower_weight == 0 ? 1 : (floor(local.lower_weight / (local.p / 100)) - local.lower_weight)
   spot_weight = var.spot_capacity_percentage <= 50 ? local.lower_weight : local.higher_weight
   ondemand_weight = var.spot_capacity_percentage <= 50 ? local.higher_weight : local.lower_weight
-  use_graviton = try (var.image_build_details["buildx"] == "true" && regexall("arm64", var.image_build_details["platforms"]), false)
+  use_graviton = try (var.image_build_details["buildx"] == "true" && length(regexall("arm64", var.image_build_details["platforms"])) > 0 , false)
 
   capacity_providers = local.use_graviton ? [
     {
