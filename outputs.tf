@@ -21,3 +21,7 @@ output "stderr_name" {
 output "full_service_name" {
   value = local.full_service_name
 }
+
+output "use_graviton" {
+  value = local.use_graviton
+}
