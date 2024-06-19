@@ -29,7 +29,7 @@ locals {
   ondemand_weight = var.spot_capacity_percentage <= 50 ? local.higher_weight : local.lower_weight
   use_graviton = try (var.image_build_details["buildx"] == "true" && regexall("arm64", var.image_build_details["platforms"]), false)
 
-  capacity_providers = use_graviton ? [
+  capacity_providers = local.use_graviton ? [
     {
       capacity_provider = "${var.ecs_cluster}-native-scaling-graviton"
       weight            = local.ondemand_weight
