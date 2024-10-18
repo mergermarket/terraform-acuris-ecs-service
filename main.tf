@@ -56,7 +56,7 @@ output "capacity_providers" {
 
 module "service" {
   source  = "mergermarket/load-balanced-ecs-service-no-target-group/acuris"
-  version = "2.5.0"
+  version = "2.6.0"
 
   name                                  = local.full_service_name
   cluster                               = var.ecs_cluster
@@ -77,7 +77,7 @@ module "service" {
 
 module "taskdef" {
   source  = "mergermarket/task-definition-with-task-role/acuris"
-  version = "2.3.0"
+  version = "2.4.0"
 
   family                = local.full_service_name
   container_definitions = [module.service_container_definition.rendered]
