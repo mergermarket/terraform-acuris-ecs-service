@@ -9,7 +9,7 @@ An ECS service with an ALB target group, suitable for routing to from an ALB.
 
 | Name                                                                      | Version |
 |---------------------------------------------------------------------------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1 |
 
 ## Providers
 
@@ -21,10 +21,10 @@ An ECS service with an ALB target group, suitable for routing to from an ALB.
 
 | Name                                                                                                                         | Source                                                        | Version |
 |------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|---------|
-| <a name="module_ecs_update_monitor"></a> [ecs\_update\_monitor](#module\_ecs\_update\_monitor)                               | mergermarket/ecs-update-monitor/acuris                        | 2.3.5   |
-| <a name="module_service"></a> [service](#module\_service)                                                                    | mergermarket/load-balanced-ecs-service-no-target-group/acuris | 2.2.7   |
-| <a name="module_service_container_definition"></a> [service\_container\_definition](#module\_service\_container\_definition) | mergermarket/ecs-container-definition/acuris                  | 2.2.0   |
-| <a name="module_taskdef"></a> [taskdef](#module\_taskdef)                                                                    | mergermarket/task-definition-with-task-role/acuris            | 2.1.0   |
+| <a name="module_ecs_update_monitor"></a> [ecs\_update\_monitor](#module\_ecs\_update\_monitor)                               | mergermarket/ecs-update-monitor/acuris                        | 2.3.6   |
+| <a name="module_service"></a> [service](#module\_service)                                                                    | mergermarket/load-balanced-ecs-service-no-target-group/acuris | 2.6.0   |
+| <a name="module_service_container_definition"></a> [service\_container\_definition](#module\_service\_container\_definition) | mergermarket/ecs-container-definition/acuris                  | 3.0.0   |
+| <a name="module_taskdef"></a> [taskdef](#module\_taskdef)                                                                    | mergermarket/task-definition-with-task-role/acuris            | 2.4.0   |
 
 ## Resources
 
