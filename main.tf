@@ -94,7 +94,7 @@ module "taskdef" {
 
 module "service_container_definition" {
   source  = "mergermarket/ecs-container-definition/acuris"
-  version = "2.4.0"
+  version = "3.0.0"
 
   name                = "${var.release["component"]}${var.name_suffix}"
   image               = var.image_id != "" ? var.image_id : var.release["image_id"]
