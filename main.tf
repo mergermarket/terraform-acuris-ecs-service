@@ -175,7 +175,7 @@ resource "aws_appautoscaling_target" "ecs" {
 }
 
 resource "aws_appautoscaling_scheduled_action" "scale_down" {
-  count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0
+  count              = !can(regex("^live(_.+)?$", var.env)) && var.allow_overnight_scaledown ? 1 : 0
   name               = "scale_down-${local.full_service_name}"
   service_namespace  = aws_appautoscaling_target.ecs.service_namespace
   resource_id        = aws_appautoscaling_target.ecs.resource_id
@@ -189,7 +189,7 @@ resource "aws_appautoscaling_scheduled_action" "scale_down" {
 }
 
 resource "aws_appautoscaling_scheduled_action" "scale_back_up" {
-  count              = var.env != "live" && var.allow_overnight_scaledown ? 1 : 0
+  count              = !can(regex("^live(_.+)?$", var.env)) && var.allow_overnight_scaledown ? 1 : 0
   name               = "scale_up-${local.full_service_name}"
   service_namespace  = aws_appautoscaling_target.ecs.service_namespace
   resource_id        = aws_appautoscaling_target.ecs.resource_id
