@@ -8,6 +8,15 @@ locals {
       "team"                  = var.release["team"]
       "version"               = var.release["version"]
   })
+
+  default_tags = jsondecode(lookup(var.release, "tags", "{}"))
+  
+}
+
+provider "aws" {
+  default_tags {
+    tags = local.default_tags
+  }
 }
 
 module "ecs_update_monitor" {
