@@ -11,20 +11,7 @@ locals {
       "version"               = var.release["version"]},
     local.default_tags
   )
-}
 
-module "ecs_update_monitor" {
-  source  = "mergermarket/ecs-update-monitor/acuris"
-  version = "2.3.6"
-
-  cluster = var.ecs_cluster
-  service = module.service.name
-  taskdef = module.taskdef.arn
-  is_test = var.is_test
-  timeout = var.deployment_timeout
-}
-
-locals {
   p = var.spot_capacity_percentage <= 50 ? var.spot_capacity_percentage : 100 - var.spot_capacity_percentage
   lower_weight = ceil(local.p / 100)
   higher_weight = local.lower_weight == 0 ? 1 : (floor(local.lower_weight / (local.p / 100)) - local.lower_weight)
@@ -53,8 +40,15 @@ locals {
   ]
 }
 
-output "capacity_providers" {
-  value = local.capacity_providers
+module "ecs_update_monitor" {
+  source  = "mergermarket/ecs-update-monitor/acuris"
+  version = "2.3.6"
+
+  cluster = var.ecs_cluster
+  service = module.service.name
+  taskdef = module.taskdef.arn
+  is_test = var.is_test
+  timeout = var.deployment_timeout
 }
 
 module "service" {
@@ -81,7 +75,7 @@ module "service" {
 
 module "taskdef" {
   source  = "mergermarket/task-definition-with-task-role/acuris"
-  version = "2.4.0"
+  version = "2.5.1"
 
   family                = local.full_service_name
   container_definitions = [module.service_container_definition.rendered]
