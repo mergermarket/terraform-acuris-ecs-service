@@ -25,7 +25,3 @@ output "full_service_name" {
 output "use_graviton" {
   value = local.use_graviton
 }
-
-output "capacity_providers" {
-  value = local.capacity_providers
-}
