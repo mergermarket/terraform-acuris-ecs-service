@@ -5,10 +5,10 @@ locals {
   default_tags = jsondecode(lookup(var.release, "tags", "{}"))
 
   tags = merge({
-     "component"              = var.release["component"]
-      "env"                   = terraform.workspace
-      "team"                  = var.release["team"]
-      "version"               = var.release["version"]},
+    "component"             = var.release["component"]
+    "env"                   = terraform.workspace
+    "team"                  = var.release["team"]
+    "version"               = var.release["version"]},
     local.default_tags
   )
 
