@@ -2,26 +2,16 @@ locals {
   service_name      = "${var.env}-${var.release["component"]}"
   full_service_name = "${local.service_name}${var.name_suffix}"
 
+  default_tags = jsondecode(lookup(var.release, "tags", "{}"))
+
   tags = merge({
      "component"              = var.release["component"]
       "env"                   = terraform.workspace
       "team"                  = var.release["team"]
-      "version"               = var.release["version"]
-  })
-}
+      "version"               = var.release["version"]},
+    local.default_tags
+  )
 
-module "ecs_update_monitor" {
-  source  = "mergermarket/ecs-update-monitor/acuris"
-  version = "2.3.6"
-
-  cluster = var.ecs_cluster
-  service = module.service.name
-  taskdef = module.taskdef.arn
-  is_test = var.is_test
-  timeout = var.deployment_timeout
-}
-
-locals {
   p = var.spot_capacity_percentage <= 50 ? var.spot_capacity_percentage : 100 - var.spot_capacity_percentage
   lower_weight = ceil(local.p / 100)
   higher_weight = local.lower_weight == 0 ? 1 : (floor(local.lower_weight / (local.p / 100)) - local.lower_weight)
@@ -50,13 +40,20 @@ locals {
   ]
 }
 
-output "capacity_providers" {
-  value = local.capacity_providers
+module "ecs_update_monitor" {
+  source  = "mergermarket/ecs-update-monitor/acuris"
+  version = "2.3.6"
+
+  cluster = var.ecs_cluster
+  service = module.service.name
+  taskdef = module.taskdef.arn
+  is_test = var.is_test
+  timeout = var.deployment_timeout
 }
 
 module "service" {
   source  = "mergermarket/load-balanced-ecs-service-no-target-group/acuris"
-  version = "2.6.0"
+  version = "2.6.1"
 
   name                                  = local.full_service_name
   cluster                               = var.ecs_cluster
@@ -73,11 +70,12 @@ module "service" {
   pack_and_distinct                     = var.pack_and_distinct
   health_check_grace_period_seconds     = var.health_check_grace_period_seconds
   capacity_providers                    = local.capacity_providers
+  tags                                  = local.tags
 }
 
 module "taskdef" {
   source  = "mergermarket/task-definition-with-task-role/acuris"
-  version = "2.4.0"
+  version = "2.5.1"
 
   family                = local.full_service_name
   container_definitions = [module.service_container_definition.rendered]
@@ -141,11 +139,13 @@ module "service_container_definition" {
 resource "aws_cloudwatch_log_group" "stdout" {
   name              = "${local.full_service_name}-stdout"
   retention_in_days = "7"
+  tags = local.tags
 }
 
 resource "aws_cloudwatch_log_group" "stderr" {
   name              = "${local.full_service_name}-stderr"
   retention_in_days = "7"
+  tags = local.tags
 }
 
 resource "aws_cloudwatch_log_subscription_filter" "kinesis_log_stdout_stream" {
@@ -172,6 +172,7 @@ resource "aws_appautoscaling_target" "ecs" {
   resource_id        = "service/${var.ecs_cluster}/${local.full_service_name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
+  tags = local.tags
 }
 
 resource "aws_appautoscaling_scheduled_action" "scale_down" {
