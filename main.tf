@@ -42,7 +42,7 @@ locals {
 
 module "ecs_update_monitor" {
   source  = "mergermarket/ecs-update-monitor/acuris"
-  version = "2.3.6"
+  version = "2.3.8"
 
   cluster = var.ecs_cluster
   service = module.service.name
@@ -75,7 +75,7 @@ module "service" {
 
 module "taskdef" {
   source  = "mergermarket/task-definition-with-task-role/acuris"
-  version = "2.5.1"
+  version = "2.5.2"
 
   family                = local.full_service_name
   container_definitions = [module.service_container_definition.rendered]
