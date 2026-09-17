@@ -276,3 +276,15 @@ variable "spot_capacity_percentage" {
   type = number
   description = "Percentage of tasks to run on spot instances"
 }
+
+variable "container_health_check" {
+  description = "Health check attributes for the container (empty command list will disable health checks, the default)"
+  type = object({ command: list(string), interval: number, timeout: number, retries: number, startPeriod: number })
+  default = {
+    command = []
+    interval = 30
+    timeout = 5
+    retries = 3
+    startPeriod = 0
+  }
+}
