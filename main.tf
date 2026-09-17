@@ -106,6 +106,7 @@ module "service_container_definition" {
   port_mappings       = var.container_port_mappings
   application_secrets = var.application_secrets
   platform_secrets    = var.platform_secrets
+  health_check        = var.container_health_check
 
   container_env = merge(
     {
